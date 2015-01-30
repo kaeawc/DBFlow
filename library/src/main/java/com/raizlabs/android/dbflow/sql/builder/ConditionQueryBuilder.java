@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -327,7 +328,7 @@ public class ConditionQueryBuilder<ModelClass extends Model> extends QueryBuilde
      * @param params The list of conditions
      * @return This instance
      */
-    public ConditionQueryBuilder<ModelClass> putConditions(List<Condition> params) {
+    public ConditionQueryBuilder<ModelClass> putConditions(Collection<Condition> params) {
         if (params != null && !params.isEmpty()) {
             mParams.addAll(params);
             isChanged = true;

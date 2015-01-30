@@ -78,6 +78,14 @@ public abstract class BaseModelContainer<ModelClass extends Model, DataClass> im
         return mData;
     }
 
+    protected ModelClass getModel() {
+        return mModel;
+    }
+
+    protected void setModel(ModelClass mModel) {
+        this.mModel = mModel;
+    }
+
     /**
      * Sets the data for this container
      *

@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.sql.builder.ConditionQueryBuilder;
 import com.raizlabs.android.dbflow.structure.Model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -110,6 +111,10 @@ public class From<ModelClass extends Model> implements WhereBase<ModelClass>, Qu
      * @return
      */
     public Where<ModelClass> where(Condition... conditions) {
+        return where().andThese(conditions);
+    }
+
+    public Where<ModelClass> where(Collection<Condition> conditions) {
         return where().andThese(conditions);
     }
 

@@ -20,6 +20,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.builder.ConditionQueryBuilder;
 import com.raizlabs.android.dbflow.structure.Model;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -163,7 +164,7 @@ public class Where<ModelClass extends Model> implements Query, Queriable<ModelCl
      * @param conditions The list of {@link com.raizlabs.android.dbflow.sql.builder.Condition}
      * @return
      */
-    public Where<ModelClass> andThese(List<Condition> conditions) {
+    public Where<ModelClass> andThese(Collection<Condition> conditions) {
         mConditionQueryBuilder.putConditions(conditions);
         return this;
     }
