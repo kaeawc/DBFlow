@@ -31,7 +31,7 @@ public abstract class ModelViewAdapter<ModelClass extends Model, ModelViewClass 
     }
 
     /**
-     * @return A new instace of the {@link ModelViewClass} must have a default constructor.
+     * @return A new instance of the {@link ModelViewClass} must have a default constructor.
      */
     protected abstract ModelViewClass newInstance();
 

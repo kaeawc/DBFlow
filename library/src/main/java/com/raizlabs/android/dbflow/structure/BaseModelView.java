@@ -34,13 +34,4 @@ public abstract class BaseModelView<ModelClass extends Model> implements Model {
         return ((ModelViewAdapter<? extends Model, BaseModelView<ModelClass>>) FlowManager.getModelViewAdapter(getClass())).exists(this);
     }
 
-    /**
-     * Gets thrown when an operation is not valid for the SQL View
-     */
-    private static class InvalidSqlViewOperationException extends RuntimeException {
-
-        private InvalidSqlViewOperationException(String detailMessage) {
-            super(detailMessage);
-        }
-    }
 }

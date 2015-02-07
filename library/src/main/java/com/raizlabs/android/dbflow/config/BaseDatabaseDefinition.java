@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.raizlabs.android.dbflow.DatabaseHelperListener;
 import com.raizlabs.android.dbflow.sql.migration.Migration;
+import com.raizlabs.android.dbflow.structure.BaseModelJoin;
 import com.raizlabs.android.dbflow.structure.BaseModelView;
+import com.raizlabs.android.dbflow.structure.JoinAdapter;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.ModelViewAdapter;
@@ -72,9 +74,15 @@ public abstract class BaseDatabaseDefinition {
 
     /**
      * @param table the VIEW class to retrieve the ModelViewAdapter from.
-     * @return the associated {@link com.raizlabs.android.dbflow.structure.ModelViewAdapter} for the specified table.
+     * @return the associated {@link com.raizlabs.android.dbflow.structure.ModelViewAdapter} for the specified modelview .
      */
     abstract ModelViewAdapter getModelViewAdapterForTable(Class<? extends BaseModelView> table);
+
+    /**
+     * @param joinTable The JOIN class to retrieve the {@link com.raizlabs.android.dbflow.structure.JoinAdapter} from
+     * @return the associated {@link com.raizlabs.android.dbflow.structure.JoinAdapter} for the specified join class
+     */
+    abstract JoinAdapter getJoinAdapterForTable(Class<? extends BaseModelJoin> joinTable);
 
     /**
      * @return The list of {@link com.raizlabs.android.dbflow.structure.ModelViewAdapter}. Internal method for

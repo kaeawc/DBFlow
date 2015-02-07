@@ -8,8 +8,10 @@ import com.raizlabs.android.dbflow.DatabaseHelperListener;
 import com.raizlabs.android.dbflow.converter.TypeConverter;
 import com.raizlabs.android.dbflow.sql.builder.ConditionQueryBuilder;
 import com.raizlabs.android.dbflow.sql.migration.Migration;
+import com.raizlabs.android.dbflow.structure.BaseModelJoin;
 import com.raizlabs.android.dbflow.structure.BaseModelView;
 import com.raizlabs.android.dbflow.structure.InvalidDBConfiguration;
+import com.raizlabs.android.dbflow.structure.JoinAdapter;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.ModelViewAdapter;
@@ -184,15 +186,24 @@ public class FlowManager {
     }
 
     /**
-     * Returns the model view adapter for a SQLite VIEW. These are only created with the {@link com.raizlabs.android.dbflow.annotation.ModelView} annotation.
      *
      * @param modelViewClass   The class of the VIEW
      * @param <ModelViewClass> The class that implements {@link com.raizlabs.android.dbflow.structure.Model}
-     * @return
+     * @return the {@link com.raizlabs.android.dbflow.structure.ModelViewAdapter} for a SQLite VIEW. These are only created with the {@link com.raizlabs.android.dbflow.annotation.ModelView} annotation.
      */
     @SuppressWarnings("unchecked")
     public static <ModelViewClass extends BaseModelView<? extends Model>> ModelViewAdapter<? extends Model, ModelViewClass> getModelViewAdapter(Class<ModelViewClass> modelViewClass) {
-        return FlowManager.getDatabaseForTable(modelViewClass).getModelViewAdapterForTable(modelViewClass);
+        return getDatabaseForTable(modelViewClass).getModelViewAdapterForTable(modelViewClass);
+    }
+
+    /**
+     * @param joinClass The class to join
+     * @param <JoinClass> The class that extends {@link com.raizlabs.android.dbflow.structure.BaseModelJoin}
+     * @return the {@link com.raizlabs.android.dbflow.structure.JoinAdapter} for SQLite JOIN. These are only created with the {@link com.raizlabs.android.dbflow.annotation.ModelJoin} annotation
+     */
+    @SuppressWarnings("unchecked")
+    public static <JoinClass extends BaseModelJoin> JoinAdapter<JoinClass>  getJoinAdapter(Class<JoinClass> joinClass) {
+        return getDatabaseForTable(joinClass).getJoinAdapterForTable(joinClass);
     }
 
     static Map<Integer, List<Migration>> getMigrations(String databaseName) {
