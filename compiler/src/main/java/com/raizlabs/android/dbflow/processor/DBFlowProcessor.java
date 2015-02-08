@@ -71,6 +71,7 @@ public class DBFlowProcessor extends AbstractProcessor {
                 new TableHandler(),
                 new ModelContainerHandler(),
                 new ModelViewHandler(),
+                new ModelJoinHandler(),
                 new FlowManagerHandler());
     }
 

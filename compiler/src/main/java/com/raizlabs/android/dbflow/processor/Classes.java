@@ -27,6 +27,8 @@ public class Classes {
 
     public static final String MODEL_CONTAINER = CONTAINER + "ModelContainer";
 
+    public static final String MODEL_JOIN_ADAPTER = STRUCTURE + "JoinAdapter";
+
     public static final String MODEL = STRUCTURE + "Model";
 
     public static final String CONDITION_QUERY_BUILDER = BUILDER + "ConditionQueryBuilder";
@@ -84,4 +86,6 @@ public class Classes {
     public static final String LOAD_FROM_CURSOR_LISTENER = LISTENER + "LoadFromCursorListener";
 
     public static final String SQLITE_STATEMENT_LISTENER = LISTENER + "SQLiteStatementListener";
+
+    public static final String BASE_MODEL_JOIN = STRUCTURE + "BaseModelJoin";
 }

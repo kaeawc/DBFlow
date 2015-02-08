@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.processor.Classes;
 import com.raizlabs.android.dbflow.processor.DBFlowProcessor;
 import com.raizlabs.android.dbflow.processor.ProcessorUtils;
 import com.raizlabs.android.dbflow.processor.model.ProcessorManager;
+import com.raizlabs.android.dbflow.processor.utils.ModelUtils;
 import com.raizlabs.android.dbflow.processor.utils.WriterUtils;
 import com.raizlabs.android.dbflow.processor.validator.ColumnValidator;
 import com.raizlabs.android.dbflow.processor.writer.CreationQueryWriter;
@@ -71,10 +72,8 @@ public class TableDefinition extends BaseTableDefinition implements FlowWriter {
 
         Table table = element.getAnnotation(Table.class);
         this.tableName = table.value();
-        databaseName = table.databaseName();
-        if (databaseName == null || databaseName.isEmpty()) {
-            databaseName = DBFlowProcessor.DEFAULT_DB_NAME;
-        }
+        databaseName = ModelUtils.getDatabaseName(table.databaseName());
+
         insertConflictActionName = table.insertConflict().equals(ConflictAction.NONE) ? ""
                 : table.insertConflict().name();
         updateConflicationActionName = table.updateConflict().equals(ConflictAction.NONE) ? ""

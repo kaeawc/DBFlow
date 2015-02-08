@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.processor.DBFlowProcessor;
 import com.raizlabs.android.dbflow.processor.ProcessorUtils;
 import com.raizlabs.android.dbflow.processor.handler.FlowManagerHandler;
 import com.raizlabs.android.dbflow.processor.model.ProcessorManager;
+import com.raizlabs.android.dbflow.processor.utils.ModelUtils;
 import com.raizlabs.android.dbflow.processor.utils.WriterUtils;
 import com.raizlabs.android.dbflow.processor.writer.ExistenceWriter;
 import com.raizlabs.android.dbflow.processor.writer.FlowWriter;
@@ -50,10 +51,7 @@ public class ModelViewDefinition extends BaseTableDefinition implements FlowWrit
 
         ModelView modelView = element.getAnnotation(ModelView.class);
         this.query = modelView.query();
-        this.databaseName = modelView.databaseName();
-        if(databaseName == null || databaseName.isEmpty()) {
-            databaseName = DBFlowProcessor.DEFAULT_DB_NAME;
-        }
+        this.databaseName = ModelUtils.getDatabaseName(modelView.databaseName());
 
         this.name = modelView.name();
         if(name == null || name.isEmpty()) {

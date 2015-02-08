@@ -38,6 +38,9 @@ public class FlowManagerHandler extends BaseContainerHandler<Database> {
     public static final String MIGRATION_FIELD_NAME = "mMigrationMap";
 
     public static final String MODEL_VIEW_ADAPTER_MAP_FIELD_NAME = "mModelViewAdapterMap";
+    public static final String MODEL_JOIN_ADAPTER_MAP_FIELD_NAME = "mModelJoinAdapterMap";
+
+
 
     @Override
     public void handle(ProcessorManager processorManager, RoundEnvironment roundEnvironment) {

@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.processor.Classes;
 import com.raizlabs.android.dbflow.processor.definition.BaseDefinition;
+import com.raizlabs.android.dbflow.processor.definition.JoinDefinition;
 import com.raizlabs.android.dbflow.processor.definition.MigrationDefinition;
 import com.raizlabs.android.dbflow.processor.definition.ModelContainerDefinition;
 import com.raizlabs.android.dbflow.processor.definition.ModelViewDefinition;
@@ -81,6 +82,8 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
                 Classes.MODEL_ADAPTER,
                 Classes.MODEL_VIEW,
                 Classes.MODEL_VIEW_ADAPTER,
+                Classes.MODEL_JOIN_ADAPTER,
+                Classes.BASE_MODEL_JOIN,
                 Classes.MODEL, Classes.CONTAINER_ADAPTER,
                 Classes.MAP,
                 Classes.HASH_MAP, Classes.LIST,
@@ -98,11 +101,15 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
         javaWriter.emitSingleLineComment("Writing for: " + databaseName);
 
         for (TableDefinition tableDefinition : manager.getTableDefinitions(databaseName)) {
-            javaWriter.emitStatement("holder.putDatabaseForTable(%1s, this)", ModelUtils.getFieldClass(tableDefinition.getQualifiedModelClassName()));
+            javaWriter.emitStatement(ModelUtils.getDatabaseForTableString(ModelUtils.getFieldClass(tableDefinition.getQualifiedModelClassName())));
         }
 
         for (ModelViewDefinition modelViewDefinition : manager.getModelViewDefinitions(databaseName)) {
-            javaWriter.emitStatement("holder.putDatabaseForTable(%1s, this)", ModelUtils.getFieldClass(modelViewDefinition.getFullyQualifiedModelClassName()));
+            javaWriter.emitStatement(ModelUtils.getDatabaseForTableString(ModelUtils.getFieldClass(modelViewDefinition.getFullyQualifiedModelClassName())));
+        }
+
+        for(JoinDefinition joinDefinition: manager.getModelJoinDefinitions(databaseName)) {
+            javaWriter.emitStatement(ModelUtils.getDatabaseForTableString(ModelUtils.getFieldClass(joinDefinition.getQualifiedModelClassName())));
         }
 
         javaWriter.emitEmptyLine();
@@ -140,6 +147,11 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
                     ModelUtils.getFieldClass(modelViewDefinition.getFullyQualifiedModelClassName()), modelViewDefinition.getSourceFileName());
         }
 
+        for (JoinDefinition joinDefinition : manager.getModelJoinDefinitions(databaseName)) {
+            javaWriter.emitStatement(FlowManagerHandler.MODEL_JOIN_ADAPTER_MAP_FIELD_NAME + ".put(%1s, new %1s())",
+                    ModelUtils.getFieldClass(joinDefinition.getQualifiedModelClassName()), joinDefinition.getSourceFileName());
+        }
+
         javaWriter.endConstructor();
     }
 
@@ -175,6 +187,11 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
 
         // Model View Adapters
         javaWriter.emitField("Map<Class<? extends BaseModelView>, ModelViewAdapter>", FlowManagerHandler.MODEL_VIEW_ADAPTER_MAP_FIELD_NAME,
+                FlowManagerHandler.FIELD_MODIFIERS, "new HashMap<>()");
+        javaWriter.emitEmptyLine();
+
+        // Model Join Adapters
+        javaWriter.emitField("Map<Class<? extends BaseModelJoin>, JoinAdapter>", FlowManagerHandler.MODEL_JOIN_ADAPTER_MAP_FIELD_NAME,
                 FlowManagerHandler.FIELD_MODIFIERS, "new HashMap<>()");
         javaWriter.emitEmptyLine();
 
@@ -222,7 +239,7 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
             }
         }, "ContainerAdapter", "getModelContainerAdapterForTable", FlowManagerHandler.METHOD_MODIFIERS, "Class<? extends Model>", "table");
 
-        // Get Model Container
+        // Get Model View Adapter
         WriterUtils.emitOverriddenMethod(javaWriter, new FlowWriter() {
             @Override
             public void write(JavaWriter javaWriter) throws IOException {
@@ -230,6 +247,13 @@ public class DatabaseWriter extends BaseDefinition implements FlowWriter {
             }
         }, "ModelViewAdapter", "getModelViewAdapterForTable", FlowManagerHandler.METHOD_MODIFIERS, "Class<? extends BaseModelView>", "table");
 
+        // Get Join Adapter
+        WriterUtils.emitOverriddenMethod(javaWriter, new FlowWriter() {
+            @Override
+            public void write(JavaWriter javaWriter) throws IOException {
+                javaWriter.emitStatement("return %1s.get(%1s)", FlowManagerHandler.MODEL_JOIN_ADAPTER_MAP_FIELD_NAME, "table");
+            }
+        }, "JoinAdapter", "getJoinAdapterForTable", FlowManagerHandler.METHOD_MODIFIERS, "Class<? extends BaseModelJoin>", "table");
 
         // Get Model View Adapters
         WriterUtils.emitOverriddenMethod(javaWriter, new FlowWriter() {

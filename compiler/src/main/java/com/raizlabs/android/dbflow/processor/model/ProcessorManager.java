@@ -40,6 +40,9 @@ public class ProcessorManager implements Handler{
 
     private Map<String, Map<String, ModelViewDefinition>> mModelViewDefinition = Maps.newHashMap();
 
+    private Map<String, Map<String, JoinDefinition>> mModelJoinDefinition = Maps.newHashMap();
+
+
     private Map<String, Map<Integer, List<MigrationDefinition>>> mMigrations = Maps.newHashMap();
 
     private List<DatabaseWriter> mManagerWriters = Lists.newArrayList();
@@ -136,6 +139,19 @@ public class ProcessorManager implements Handler{
         return mTableDefinitions.get(databaseName).get(typeElement.getQualifiedName().toString());
     }
 
+    public void addJoinDefinition(JoinDefinition joinDefinition) {
+        Map<String, JoinDefinition> joinDefinitionMap = mModelJoinDefinition.get(joinDefinition.databaseName);
+        if(joinDefinitionMap == null) {
+            joinDefinitionMap = Maps.newHashMap();
+            mModelJoinDefinition.put(joinDefinition.databaseName, joinDefinitionMap);
+        }
+        joinDefinitionMap.put(joinDefinition.element.asType().toString(), joinDefinition);
+    }
+
+    public JoinDefinition getJoinDefinition(String databaseName, TypeElement typeElement) {
+        return mModelJoinDefinition.get(databaseName).get(typeElement.getQualifiedName().toString());
+    }
+
     public void addModelViewDefinition(ModelViewDefinition modelViewDefinition) {
         Map<String, ModelViewDefinition> modelViewDefinitionMap = mModelViewDefinition.get(modelViewDefinition.databaseName);
         if(modelViewDefinitionMap == null) {
@@ -147,6 +163,15 @@ public class ProcessorManager implements Handler{
 
     public ModelViewDefinition getModelViewDefinition(String databaseName, TypeElement typeElement) {
         return mModelViewDefinition.get(databaseName).get(typeElement.getQualifiedName().toString());
+    }
+
+    public Set<JoinDefinition> getModelJoinDefinitions(String databaseName) {
+        Map<String, JoinDefinition> modelViewDefinitionMap = mModelJoinDefinition.get(databaseName);
+        if(modelViewDefinitionMap != null) {
+            return Sets.newHashSet(mModelJoinDefinition.get(databaseName).values());
+        } else {
+            return Sets.newHashSet();
+        }
     }
 
     public Set<TypeConverterDefinition> getTypeConverters() {

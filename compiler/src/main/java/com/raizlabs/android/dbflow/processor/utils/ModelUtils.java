@@ -1,6 +1,7 @@
 package com.raizlabs.android.dbflow.processor.utils;
 
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.processor.DBFlowProcessor;
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.SQLiteType;
 import com.raizlabs.android.dbflow.sql.StatementMap;
@@ -243,5 +244,17 @@ public class ModelUtils {
         }
         queryBuilder.append(")");
         javaWriter.beginControlFlow(queryBuilder.getQuery());
+    }
+
+    public static String getDatabaseName(String databaseName) {
+        String name = databaseName;
+        if(databaseName == null || databaseName.isEmpty()) {
+            name = DBFlowProcessor.DEFAULT_DB_NAME;
+        }
+        return name;
+    }
+
+    public static String getDatabaseForTableString(String fQCN) {
+        return String.format("holder.putDatabaseForTable(%1s, this)", fQCN);
     }
 }

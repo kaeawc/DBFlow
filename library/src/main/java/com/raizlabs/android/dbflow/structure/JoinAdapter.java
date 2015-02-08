@@ -16,7 +16,7 @@ public abstract class JoinAdapter<JoinClass extends BaseModelJoin> {
     public abstract void loadFromCursor(Cursor cursor, JoinClass modelViewClass);
 
     /**
-     * Creates a new {@link ModelViewClass} and loads the cursor into it.
+     * Creates a new {@link JoinClass} and loads the cursor into it.
      *
      * @param cursor The cursor to query
      * @return The new model view with the cursor data in it.
