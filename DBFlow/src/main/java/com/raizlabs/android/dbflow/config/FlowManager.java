@@ -182,7 +182,13 @@ public class FlowManager {
     /**
      * Release reference to context
      */
-    public static synchronized void destroy() {
+    public static synchronized void destroy(String... databases) {
+
+        for (String database : databases) {
+            BaseDatabaseDefinition definition = getDatabase(database);
+            definition.reset(context);
+        }
+
         context = null;
         mDatabaseHolder = null;
     }

@@ -79,15 +79,13 @@ public class MainFragment extends Fragment {
             }
 
             Log.d(TAG, "FlowManager.destroy");
-            FlowManager.destroy();
             Context context = getActivity().getApplicationContext();
-            String databaseName = getDatabaseName();
-            boolean deleted = context.deleteDatabase(databaseName);
+            FlowManager.destroy(getDatabaseName());
 
-            if (deleted) {
-                Log.v(TAG, "Database deleted");
+            if (exists(context)) {
+                Log.v(TAG, "Database exists");
             } else {
-                Log.v(TAG, "Database not deleted");
+                Log.v(TAG, "Database does not exist");
             }
 
         }
