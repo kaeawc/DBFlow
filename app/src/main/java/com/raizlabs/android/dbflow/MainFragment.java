@@ -80,7 +80,8 @@ public class MainFragment extends Fragment {
 
             Log.d(TAG, "FlowManager.destroy");
             Context context = getActivity().getApplicationContext();
-            FlowManager.destroy(getDatabaseName());
+            FlowManager.destroy(AppDatabase.NAME);
+            FlowManager.init(context);
 
             if (exists(context)) {
                 Log.v(TAG, "Database exists");
@@ -101,7 +102,6 @@ public class MainFragment extends Fragment {
 
             Log.d(TAG, "FlowManager.init");
             Context context = getActivity().getApplicationContext();
-            String databaseName = getDatabaseName();
             FlowManager.init(context);
 
             if (exists(context)) {
@@ -111,7 +111,7 @@ public class MainFragment extends Fragment {
             }
 
             try {
-                BaseDatabaseDefinition definition = FlowManager.getDatabase(databaseName);
+                BaseDatabaseDefinition definition = FlowManager.getDatabase(AppDatabase.NAME);
                 Log.v(TAG, "Database does exist?");
             } catch (Exception exception) {
                 Log.v(TAG, "Database does not exist");
@@ -134,18 +134,11 @@ public class MainFragment extends Fragment {
         }
     };
 
-    @NonNull
-    public static String getDatabaseName() {
-        // TODO: write a test that ensures this resource exists.
-        return String.format("%s.db", AppDatabase.NAME);
-    }
-
     public static boolean exists(@NonNull Context context) {
 
-        String databaseName = getDatabaseName();
 
         try {
-            File dbFile = context.getDatabasePath(databaseName);
+            File dbFile = context.getDatabasePath(AppDatabase.NAME);
             return dbFile.exists();
         } catch (Exception exception) {
             Log.v(TAG, "Database doesn't exist.");
