@@ -2,13 +2,14 @@ package com.raizlabs.android.dbflow;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.raizlabs.android.dbflow.app.R;
 
 
-public class DemoActivity extends Activity {
+public class DemoActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,8 +3,10 @@
           package="com.raizlabs.android.dbflow.app">
 
     <application
+        android:name="com.raizlabs.android.dbflow.App"
         android:allowBackup="true"
-        android:label="DB Flow Compiler Test" >
+        android:label="DB Flow Compiler Test"
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.raizlabs.android.dbflow.DemoActivity">
             <intent-filter>
